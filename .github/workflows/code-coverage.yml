@@ -46,6 +46,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: ${{ inputs.resource_name }}
+          path: report
 
       - name: Parse Coverage Summary
         id: parse-coverage
@@ -57,17 +58,17 @@ jobs:
           extract_coverage_data() {
               local keyword=$1
               local field=$2
-              awk "/$keyword/ {print $field}" integration-coverage.txt | tr -d '\n|%'
+              awk "/$keyword/ {print $field}" report/integration-coverage.txt | tr -d '\n|%'
           }
 
           # Determine status based on percentage
           get_status() {
               if [ "$(echo "$1 < 50" | bc)" -eq 1 ]; then
-                  echo "🔴"
+                  echo "❌"
               elif [ "$(echo "$1 < 80" | bc)" -eq 1 ]; then
-                  echo "🟡"
+                  echo "⚠️"
               else
-                  echo "🟢"
+                  echo "✅"
               fi
           }
 
@@ -103,7 +104,6 @@ jobs:
       - name: Post or Update Coverage Summary Comment
         if: ${{ steps.findPr.outputs.number != '' }}
         uses: actions/github-script@v7
-        if: ${{ steps.findPr.outputs.number != '' }}
         with:
           script: |
             const fs = require('fs');
