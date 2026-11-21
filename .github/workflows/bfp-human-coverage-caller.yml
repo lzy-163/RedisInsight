@@ -1,0 +1,15 @@
+name: BFP RedisInsight human baseline caller
+on: push
+permissions:
+  contents: read
+jobs:
+  unit:
+    uses: ./.github/workflows/code-coverage.yml
+    with:
+      type: unit
+      resource_name: report-be
+  integration:
+    uses: ./.github/workflows/code-coverage.yml
+    with:
+      type: integration
+      resource_name: report-be
