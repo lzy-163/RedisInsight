@@ -63,11 +63,11 @@ jobs:
           # Determine status based on percentage
           get_status() {
               if [ "$(echo "$1 < 50" | bc)" -eq 1 ]; then
-                  echo "🔴"
+                  echo "馃敶"
               elif [ "$(echo "$1 < 80" | bc)" -eq 1 ]; then
-                  echo "🟡"
+                  echo "馃煛"
               else
-                  echo "🟢"
+                  echo "馃煝"
               fi
           }
 
@@ -103,7 +103,6 @@ jobs:
       - name: Post or Update Coverage Summary Comment
         if: ${{ steps.findPr.outputs.number != '' }}
         uses: actions/github-script@v7
-        if: ${{ steps.findPr.outputs.number != '' }}
         with:
           script: |
             const fs = require('fs');
